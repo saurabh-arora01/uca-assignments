@@ -1,0 +1,58 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+
+
+struct ListNode* reverseBetween(struct ListNode* head, int left, int right){
+
+    if(head == NULL) {
+        return NULL;
+    }
+    else if(left == right) {
+        return head;
+    }
+        
+    struct ListNode *prevStart = NULL, *start = head, *current = head;
+    int counter = 1;
+        
+    // finding the left node(start node) and the node before it
+    while(counter != left) {
+            
+        prevStart = current;
+            
+        current = current -> next;
+        counter++;
+            
+        start = current;
+    }
+        
+    // reversing from left to right
+    struct ListNode *before = NULL, *after;
+        
+    while(counter != right + 1) {
+            
+        after = current -> next;
+            
+        current -> next = before;
+        before = current;
+        current = after;
+            
+        counter++;
+    }
+        
+    // if left is 1 then tail of the reversed part is the new head
+    if(left == 1) {
+        head = before;
+    }
+    else {
+        prevStart -> next = before;
+    }
+        
+    start -> next = current;
+        
+    return head;
+}

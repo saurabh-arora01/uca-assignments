@@ -1,0 +1,64 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+
+
+bool isPalindrome(struct ListNode* head){
+    
+    if(head == NULL) {
+        return false;
+    }
+    else if(head -> next == NULL) {
+        return true;
+    }
+
+    // finding the mid node of linked list
+    struct ListNode *slow = head, *fast = head -> next;
+
+    while(fast!= NULL) {
+
+        slow = slow -> next;
+
+        if(fast -> next != NULL && fast -> next -> next != NULL) {
+            fast = fast -> next -> next;
+        }
+        else {
+            break;
+        }
+    }
+
+    // reversing the linkedlist after the mid 
+    struct ListNode *prev = slow, *current = slow -> next, *next;
+
+    while(current != NULL) {
+        next = current -> next;
+
+        current -> next = prev;
+        prev = current;
+        current = next;
+    }
+
+    current = head;
+    // prev has tail of linked list stored in it
+
+    while(current != prev) {
+
+        if(current -> val != prev -> val) {
+            return false;
+        }
+
+        // if list has even elements the there is no actual mid
+        if(current -> next == prev) {
+            break;
+        }
+
+        current = current -> next;
+        prev = prev -> next;
+    }
+    
+    return true;
+}
